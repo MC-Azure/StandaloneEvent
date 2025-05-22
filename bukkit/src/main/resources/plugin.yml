@@ -1,0 +1,4 @@
+name: StandaloneEvent
+main: io.github.vlouboos.standaloneevent.bukkit.BukkitMain
+version: '${project.version}'
+author: vlouboos

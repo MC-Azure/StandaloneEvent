@@ -1,0 +1,10 @@
+{
+  "id": "standaloneevent",
+  "name": "StandaloneEvent",
+  "version": "${project.version}",
+  "authors": [
+    "vlouboos"
+  ],
+  "dependencies": [],
+  "main": "io.github.vlouboos.standaloneevent.velocity.VelocityMain"
+}

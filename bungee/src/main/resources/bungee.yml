@@ -1,0 +1,4 @@
+name: StandaloneEvent
+main: io.github.vlouboos.standaloneevent.bungee.BungeeMain
+version: '${project.version}'
+author: vlouboos
