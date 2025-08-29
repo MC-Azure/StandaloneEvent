@@ -1,3 +1,6 @@
+// This file is part of StandaloneEvent.
+// You WON'T be guaranteed to be permitted with this file unless you're under BSD-3 Licence.
+// See https://spdx.org/licenses/BSD-3-Clause.html
 package io.github.vlouboos.standaloneevent;
 
 import io.github.vlouboos.standaloneevent.api.Event;
@@ -26,7 +29,7 @@ public class EventRegistry implements StandaloneEvent {
                     if (method.isAnnotationPresent(EventHandler.class)
                             && method.getParameterCount() == 1
                             && Event.class.isAssignableFrom(method.getParameterTypes()[0])
-                            && ((method.getModifiers() & Modifier.STATIC) == 0 || instance instanceof Class)
+                            && (((method.getModifiers() & Modifier.STATIC) == 0 && !(instance instanceof Class)) || (Modifier.isStatic(method.getModifiers()) && instance instanceof Class))
                     ) {
                         @SuppressWarnings("unchecked")
                         Class<? extends Event> eventClass = (Class<? extends Event>) method.getParameterTypes()[0];

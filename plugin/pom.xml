@@ -41,6 +41,20 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <includes>
+                                        <include>io/github/vlouboos/**</include>
+                                        <include>plugin.yml</include>
+                                        <include>bungee.yml</include>
+                                        <include>velocity-plugin.json</include>
+                                        <include>META-INF/**</include>
+                                    </includes>
+                                </filter>
+                            </filters>
+                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
