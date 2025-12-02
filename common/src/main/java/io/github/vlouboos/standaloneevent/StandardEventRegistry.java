@@ -3,9 +3,7 @@
 // See https://spdx.org/licenses/BSD-3-Clause.html
 package io.github.vlouboos.standaloneevent;
 
-import io.github.vlouboos.standaloneevent.api.Event;
-import io.github.vlouboos.standaloneevent.api.EventHandler;
-import io.github.vlouboos.standaloneevent.api.StandaloneEvent;
+import io.github.vlouboos.standaloneevent.api.*;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +13,7 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class EventRegistry implements StandaloneEvent {
+public class StandardEventRegistry implements StandaloneEvent {
     private static final ConcurrentHashMap<Class<? extends Event>, LinkedList<MethodInstance>> registry = new ConcurrentHashMap<>();
 
     @Override
@@ -73,6 +71,16 @@ public class EventRegistry implements StandaloneEvent {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean isRegistered(@NotNull Object instance) {
+        throw new UnsupportedOperationException("Standard Event Registry does not support duplication queries.");
+    }
+
+    @Override
+    public void makeDuplicatable() {
+        ApiProvider.makeDuplicatable();
     }
 
     @AllArgsConstructor

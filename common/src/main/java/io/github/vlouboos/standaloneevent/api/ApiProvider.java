@@ -3,10 +3,15 @@
 // See https://spdx.org/licenses/BSD-3-Clause.html
 package io.github.vlouboos.standaloneevent.api;
 
-import io.github.vlouboos.standaloneevent.EventRegistry;
+import io.github.vlouboos.standaloneevent.StandardEventRegistry;
+import io.github.vlouboos.standaloneevent.UniqueEventRegistry;
 
 public class ApiProvider {
     public static void injectApi() {
-        StandaloneEventAPI.init(new EventRegistry());
+        StandaloneEventAPI.init(new UniqueEventRegistry());
+    }
+
+    public static void makeDuplicatable() {
+        StandaloneEventAPI.duplicate(new StandardEventRegistry());
     }
 }

@@ -32,4 +32,8 @@ public final class StandaloneEventAPI {
         StandaloneEventAPI.api = api;
         loaded = true;
     }
+
+    static void duplicate(StandaloneEvent api) {
+        StandaloneEventAPI.api = api;
+    }
 }

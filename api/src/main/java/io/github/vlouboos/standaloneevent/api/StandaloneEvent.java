@@ -36,4 +36,16 @@ public interface StandaloneEvent {
      * @param event The Event to be fired
      */
     void call(@NotNull Event event);
+
+    /**
+     * Check if an object or a class is already in registry
+     * @param instance The object or class to check
+     */
+    boolean isRegistered(@NotNull Object instance);
+
+    /**
+     * Make the registry support duplicated elements
+     * @apiNote This will reinitialize the whole registry, which will delete all your registration
+     */
+    void makeDuplicatable();
 }
