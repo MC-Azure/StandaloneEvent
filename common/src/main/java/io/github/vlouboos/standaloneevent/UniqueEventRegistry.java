@@ -3,9 +3,13 @@
 // See https://spdx.org/licenses/BSD-3-Clause.html
 package io.github.vlouboos.standaloneevent;
 
+import io.github.vlouboos.standaloneevent.api.StandaloneEvent;
+import io.github.vlouboos.standaloneevent.api.StandaloneEventAPI;
 import io.github.vlouboos.standaloneevent.exception.DuplicatedRegistryException;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -31,5 +35,20 @@ public class UniqueEventRegistry extends StandardEventRegistry {
     @Override
     public boolean isRegistered(@NotNull Object instance) {
         return this.instances.contains(instance);
+    }
+
+    @SneakyThrows
+    @Override
+    public void makeDuplicatable() {
+        System.out.println("You're making a duplicatable API, which is very UNSUGGESTED and DANGEROUS. Use it at your own risk.");
+        // We won't allow invoking StandaloneEventAPI.switchAPI
+        Method method = StandaloneEventAPI.class.getDeclaredMethod("switchAPI", StandaloneEvent.class, String.class);
+        method.setAccessible(true);
+        method.invoke(null, new StandardEventRegistry(), "User require duplicatable registry");
+    }
+
+    @Override
+    public @NotNull String getRegistryName() {
+        return super.getRegistryName();
     }
 }

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.ApiStatus;
  * The standard event class of StandaloneEventAPI
  */
 @ApiStatus.OverrideOnly
+@SuppressWarnings("unused")
 public class Event {
     /**
      * Whether the event is canceled, default {@code false}

@@ -6,7 +6,7 @@
 
     <groupId>io.github.vlouboos</groupId>
     <artifactId>standaloneevent-api</artifactId>
-    <version>1.2</version>
+    <version>1.3</version>
     <name>StandaloneEvent-API</name>
     <description>API</description>
     <url>https://github.com/MC-Azure/StandaloneEvent</url>

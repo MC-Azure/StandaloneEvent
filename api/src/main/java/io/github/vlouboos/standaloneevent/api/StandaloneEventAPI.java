@@ -5,6 +5,7 @@ package io.github.vlouboos.standaloneevent.api;
 
 import lombok.Getter;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * To prevent the size of this api from getting too big, actual inherits are not embedded.
@@ -16,8 +17,6 @@ public final class StandaloneEventAPI {
      */
     @Getter
     private static StandaloneEvent api;
-    @ApiStatus.Internal
-    private static boolean loaded = false;
 
     // No constructor
     @ApiStatus.Internal
@@ -27,13 +26,13 @@ public final class StandaloneEventAPI {
 
     // package-private
     @ApiStatus.Internal
-    static void init(StandaloneEvent api) {
-        if (loaded) return;
-        StandaloneEventAPI.api = api;
-        loaded = true;
-    }
-
-    static void duplicate(StandaloneEvent api) {
+    @SuppressWarnings("all")
+    static void switchAPI(@NotNull StandaloneEvent api, @NotNull String reason) {
+        if (StandaloneEventAPI.api == null) {
+            System.out.printf("[StandaloneEventAPI] Switched to %s: %s\n", api.getRegistryName(), reason);
+        } else {
+            System.out.printf("[StandaloneEventAPI] Switched to %s from %s: %s\n", api.getRegistryName(), StandaloneEventAPI.api.getRegistryName(), reason);
+        }
         StandaloneEventAPI.api = api;
     }
 }

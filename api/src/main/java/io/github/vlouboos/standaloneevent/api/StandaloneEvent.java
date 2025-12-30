@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
  * The API of StandaloneEvent
  */
 @ApiStatus.NonExtendable
+@SuppressWarnings("unused")
 public interface StandaloneEvent {
     /**
      * Register some event listeners.
@@ -47,5 +48,12 @@ public interface StandaloneEvent {
      * Make the registry support duplicated elements
      * @apiNote This will reinitialize the whole registry, which will delete all your registration
      */
+    @ApiStatus.Experimental
     void makeDuplicatable();
+
+    /**
+     * Get the name of current registry.
+     * @return The name of current registry.
+     */
+    @NotNull String getRegistryName();
 }

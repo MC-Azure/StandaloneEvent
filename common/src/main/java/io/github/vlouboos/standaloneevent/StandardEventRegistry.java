@@ -80,7 +80,12 @@ public class StandardEventRegistry implements StandaloneEvent {
 
     @Override
     public void makeDuplicatable() {
-        ApiProvider.makeDuplicatable();
+        throw new UnsupportedOperationException("Already duplicated.");
+    }
+
+    @Override
+    public @NotNull String getRegistryName() {
+        return "Standard Event Registry";
     }
 
     @AllArgsConstructor
