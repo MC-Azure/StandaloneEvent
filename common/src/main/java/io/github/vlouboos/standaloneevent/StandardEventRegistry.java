@@ -4,7 +4,6 @@
 package io.github.vlouboos.standaloneevent;
 
 import io.github.vlouboos.standaloneevent.api.*;
-import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
@@ -12,9 +11,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StandardEventRegistry implements StandaloneEvent {
-    private static final ConcurrentHashMap<Class<? extends Event>, LinkedList<MethodInstance>> registry = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Class<? extends Event>, CopyOnWriteArrayList<MethodInstance>> registry = new ConcurrentHashMap<>();
 
     @Override
     public void register(Object @NotNull ... instances) {
@@ -32,7 +32,7 @@ public class StandardEventRegistry implements StandaloneEvent {
                         @SuppressWarnings("unchecked")
                         Class<? extends Event> eventClass = (Class<? extends Event>) method.getParameterTypes()[0];
                         EventHandler handler = method.getAnnotation(EventHandler.class);
-                        registry.putIfAbsent(eventClass, new LinkedList<>());
+                        registry.putIfAbsent(eventClass, new CopyOnWriteArrayList<>());
                         edited.add(eventClass);
                         synchronized (registry.get(eventClass)) {
                             registry.get(eventClass).add(new MethodInstance(instance, method, handler.value()));
@@ -86,12 +86,5 @@ public class StandardEventRegistry implements StandaloneEvent {
     @Override
     public @NotNull String getRegistryName() {
         return "Standard Event Registry";
-    }
-
-    @AllArgsConstructor
-    private static class MethodInstance {
-        private Object parent;
-        private Method method;
-        private long weight;
     }
 }

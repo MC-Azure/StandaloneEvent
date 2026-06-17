@@ -15,9 +15,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EventHandler {
     /**
-     * To determine the order of instances, smaller numbers mean prior executions, default {@code Long.MAX_VALUE}.
+     * To determine the order of instances, smaller numbers mean prior executions, default {@code 0}.
      *
      * @return The priority of the instance.
      */
-    long value() default Long.MAX_VALUE;
+    long value() default 0;
 }

@@ -11,6 +11,6 @@ import io.github.vlouboos.standaloneevent.api.ApiProvider;
 public class VelocityMain {
     @Inject
     public VelocityMain(ProxyServer server) {
-        ApiProvider.injectApi();
+        ApiProvider.injectApi(false);
     }
 }
