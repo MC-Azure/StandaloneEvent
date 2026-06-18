@@ -40,7 +40,7 @@ public class StandardEventRegistry implements StandaloneEvent {
                     }
                 }
             }
-            edited.forEach(e -> registry.get(e).sort(Comparator.comparingLong(m -> m.weight)));
+            edited.forEach(e -> registry.get(e).sort(Comparator.comparingLong(m -> -m.weight)));
         }
     }
 
