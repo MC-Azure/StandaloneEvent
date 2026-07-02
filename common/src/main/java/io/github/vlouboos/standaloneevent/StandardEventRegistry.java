@@ -18,7 +18,7 @@ public class StandardEventRegistry implements StandaloneEvent {
 
     @Override
     public void register(Object @NotNull ... instances) {
-        synchronized (registry) {
+        synchronized (this) {
             HashSet<Class<? extends Event>> edited = new HashSet<>();
             for (Object instance : instances) {
                 Class<?> cls = instance instanceof Class ? (Class<?>) instance : instance.getClass();
@@ -34,40 +34,43 @@ public class StandardEventRegistry implements StandaloneEvent {
                         EventHandler handler = method.getAnnotation(EventHandler.class);
                         registry.putIfAbsent(eventClass, new CopyOnWriteArrayList<>());
                         edited.add(eventClass);
-                        synchronized (registry.get(eventClass)) {
-                            registry.get(eventClass).add(new MethodInstance(instance, method, handler.value()));
-                        }
+                        registry.get(eventClass).add(new MethodInstance(instance, method, handler.value()));
                     }
                 }
             }
-            edited.forEach(e -> registry.get(e).sort(Comparator.comparingLong(m -> -m.weight)));
+            for (Class<? extends Event> eventClass : edited) {
+                CopyOnWriteArrayList<MethodInstance> cowList = registry.get(eventClass);
+                if (cowList != null) {
+                    List<MethodInstance> rawList = new ArrayList<>(cowList);
+                    rawList.sort(Comparator.comparingLong(m -> -m.weight));
+                    registry.put(eventClass, new CopyOnWriteArrayList<>(rawList));
+                }
+            }
         }
     }
 
     @Override
     public void unregister(Object @NotNull ... instances) {
         List<Object> list = Arrays.asList(instances);
-        synchronized (registry) {
+        synchronized (this) {
             for (Class<? extends Event> eventClass : registry.keySet()) {
-                synchronized (registry.get(eventClass)) {
-                    registry.get(eventClass).removeIf(m -> list.contains(m.parent));
-                }
+                registry.get(eventClass).removeIf(m -> list.contains(m.parent));
             }
         }
     }
 
     @Override
     public void call(@NotNull Event event) {
-        synchronized (registry) {
-            if (registry.containsKey(event.getClass())) {
-                synchronized (registry.get(event.getClass())) {
-                    registry.get(event.getClass()).forEach(methodInstance -> {
-                        try {
-                            methodInstance.method.invoke(methodInstance.parent, event);
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+        CopyOnWriteArrayList<MethodInstance> methods = registry.get(event.getClass());
+
+        if (methods != null) {
+            for (MethodInstance methodInstance : methods) {
+                try {
+                    methodInstance.method.invoke(methodInstance.parent, event);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException("Failed to call method " + methodInstance.parent.getClass().getName() + "." + methodInstance.method.getName(), e);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException("Something went wrong while trying to call method " + methodInstance.parent.getClass().getName() + "." + methodInstance.method.getName(), e);
                 }
             }
         }

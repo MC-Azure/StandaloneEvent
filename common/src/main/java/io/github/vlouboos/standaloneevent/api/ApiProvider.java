@@ -6,11 +6,13 @@ package io.github.vlouboos.standaloneevent.api;
 import io.github.vlouboos.standaloneevent.StandardEventRegistry;
 import io.github.vlouboos.standaloneevent.UniqueEventRegistry;
 
+import java.util.logging.Logger;
+
 public class ApiProvider {
     @SuppressWarnings("unused")
     public static void injectApi(boolean unique) {
         if (!unique) {
-            System.out.println("You're making a duplicatable API, which is very UNSUGGESTED and DANGEROUS. Use it at your own risk.");
+            Logger.getLogger("StandaloneEvent").warning("You're making a duplicatable API, which is very UNSUGGESTED and DANGEROUS. Use it at your own risk.");
         }
         StandaloneEventAPI.switchAPI(unique ? new UniqueEventRegistry() : new StandardEventRegistry(), "Initialization");
     }

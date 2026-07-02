@@ -11,25 +11,33 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UniqueEventRegistry extends StandardEventRegistry {
-    private final HashSet<Object> instances = new HashSet<>();
+    private final Set<Object> instances = ConcurrentHashMap.newKeySet();
 
     @Override
     public void register(Object @NotNull ... instances) {
-        for (Object instance : instances) {
-            if (this.instances.contains(instance)) {
-                throw new DuplicatedRegistryException(instance);
+        synchronized (this) {
+            for (Object instance : instances) {
+                if (this.instances.contains(instance)) {
+                    throw new DuplicatedRegistryException(instance);
+                }
             }
+            this.instances.addAll(Arrays.asList(instances));
+            super.register(instances);
         }
-        super.register(instances);
     }
 
     @Override
     public void unregister(Object @NotNull ... instances) {
-        Arrays.asList(instances).forEach(this.instances::remove);
-        super.unregister(instances);
+        synchronized (this) {
+            for (Object instance : instances) {
+                this.instances.remove(instance);
+            }
+            super.unregister(instances);
+        }
     }
 
     @Override
@@ -49,6 +57,6 @@ public class UniqueEventRegistry extends StandardEventRegistry {
 
     @Override
     public @NotNull String getRegistryName() {
-        return super.getRegistryName();
+        return "Unique Event Registry";
     }
 }
