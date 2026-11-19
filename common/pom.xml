@@ -6,7 +6,7 @@
 
     <groupId>io.github.vlouboos</groupId>
     <artifactId>standaloneevent-common</artifactId>
-    <version>1.6</version>
+    <version>1.7</version>
     <name>StandaloneEvent-Common</name>
     <description>Common</description>
     <url>https://github.com/MC-Azure/StandaloneEvent</url>
@@ -15,7 +15,19 @@
         <dependency>
             <groupId>io.github.vlouboos</groupId>
             <artifactId>standaloneevent-api</artifactId>
-            <version>1.5</version>
+            <version>1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.36</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>26.0.2</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
